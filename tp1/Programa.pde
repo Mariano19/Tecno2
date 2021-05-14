@@ -1,5 +1,6 @@
 class Programa {   
   //Clases  
+  Sonido sonido;
   Interacciones inter;
   Fondo fondo;
   Circulos circulo;
@@ -12,6 +13,7 @@ class Programa {
 
 
   Programa() {
+    sonido = new Sonido();
     inter = new Interacciones();
     fondo = new Fondo(); 
     circulo = new Circulos();
@@ -28,7 +30,9 @@ class Programa {
     inter.actualizar();
     triangulo.actualizar();
     linea.actualizar();
-    calcularCentro();
+    calcularCentro();    
+    sonido.actualizar();
+    
   }
 
 

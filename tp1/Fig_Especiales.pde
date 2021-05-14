@@ -64,7 +64,7 @@ class FigEspeciales {
     shaking();
     movimiento();
     limites();
-    debug();
+    //debug();
   }
   //metodos y funciones
   void dibujar () {     //dibuja uno solo
@@ -163,16 +163,16 @@ class FigEspeciales {
     }
   }
   
-  void debug() {
-    pushStyle();
-    fill(255, 0, 0);
-    textSize(24);
-    text("POSY " + posy[1], 50, 50);
-    text("AVANCE " +avance[1], 50, 80);
-    text("VEL " + vel[1], 50, 110);
-    text("POSX " + posx[1], 50, 140);
-    //text("PX " + px, 50, 170);
+  //void debug() {
+  //  pushStyle();
+  //  fill(255, 0, 0);
+  //  textSize(24);
+  //  text("POSY " + posy[1], 50, 50);
+  //  text("AVANCE " +avance[1], 50, 80);
+  //  text("VEL " + vel[1], 50, 110);
+  //  text("POSX " + posx[1], 50, 140);
+  //  //text("PX " + px, 50, 170);
 
-    popStyle();
-  }
+  //  popStyle();
+  //}
 }

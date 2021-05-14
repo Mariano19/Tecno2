@@ -1,5 +1,4 @@
-import netP5.*;
-import oscP5.*;
+
 
 /*
 Posibles interacciones:
@@ -18,17 +17,14 @@ Posibles interacciones:
  Activo: Se mueven al detectar el movimiento del mouse 
  En espera: Luego de determinado tiempo sin recibir movimiento del mouse las figuras
  vuelven al fondo 
- 
- 
- Ideas por hacer
- -Que la velocidad del movimiento de las figuras sea más baja cuando esten cerca del limite y el inicio, y que sea más
- rapido al medio.
- -Averiguar el punto medio entre circulo y figura especial, para hacer que ambas figuras se acerquen a ese punto y se encuentren.
  */
 
 //---------------------------------------------------------------------------------------------------------------------------
+
+import netP5.*;
+import oscP5.*;
 Programa programa;
-OscP5 osc;
+
 
 void setup () {
   size (600, 700);
@@ -38,7 +34,6 @@ void setup () {
   
   // Inicio objeto
   programa = new Programa();
-  osc = new OscP5(this, 12345);
 }
 
 void draw () {

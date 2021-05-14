@@ -95,18 +95,17 @@ class Circulos {
         posy[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
 
         //shake   
-        if (posy[i]-height/6 <= posyDestino[i]) {
-          //posY=limite_superior;
-          shake = true;
-        } else {
-
-          shake = false;
-        }
+        //if (posy[i]-height/6 <= posyDestino[i]) {
+        //  //posY=limite_superior;
+        //  shake = true;
+        //} else {
+        //  shake = false;
+        //seMoviaEnElFrameAnterior}
       } else if (programa.inter.seMoviaEnElFrameAnterior == false) {// cambio variable movPeque
         //println( posyInicial[i]);
         if (avance [i]<2) {
           avance[i] = avance[i]-vel[i];
-          shake = false;
+          //shake = false;
         }  
 
         posy[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
@@ -125,6 +124,17 @@ class Circulos {
     //image(circulos[i], px, py);
     popStyle();
   }
+  
+  
+  
+  //====PRUEBAS CON SONIDO====
+  //void movimiento(){     
+  //  for (int i=0; i<cant; i++) {
+  //   px[i] = lerp(posx[i], programa.promedioPosX, factor);
+  //   py[i] = lerp(programa.sonido.posY[i], programa.promedioPosY, factor);      
+  //  }
+  //}
+  //==========================
 
 
 
