@@ -1,3 +1,6 @@
+import netP5.*;
+import oscP5.*;
+
 /*
 Posibles interacciones:
  
@@ -25,15 +28,17 @@ Posibles interacciones:
 
 //---------------------------------------------------------------------------------------------------------------------------
 Programa programa;
+OscP5 osc;
 
 void setup () {
   size (600, 700);
   colorMode(HSB); 
   //rectMode(CORNER);
   imageMode(CENTER);
-
+  
   // Inicio objeto
   programa = new Programa();
+  osc = new OscP5(this, 12345);
 }
 
 void draw () {

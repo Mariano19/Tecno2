@@ -28,8 +28,8 @@ class Fondo {
   void calcular() {
     if (programa.inter.giraDerecha) {
       transparencia +=5;
-      if (transparencia > 200) { 
-        transparencia = 199;
+      if (transparencia > 150) { 
+        transparencia = 149;
       }
       //transparencia = transparencia%255; Para ponerle un reset
     } else if (programa.inter.giraIzquierda) {

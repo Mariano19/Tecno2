@@ -6,7 +6,9 @@ class FigEspeciales {
   float limite;  
   boolean shake;
   int cant = 3;
-  PImage[] especiales = new PImage[cant];  
+  PImage[] especiales = new PImage[cant];
+ 
+  PImage[] especialesborde = new PImage[cant];
   int num2 = int(random(cant));              //seleccion al azar del elemento  
 
   //variables de movimiento
@@ -45,6 +47,8 @@ class FigEspeciales {
     //imagen
     for ( int i = 0; i < cant; i++ ) {
       especiales [i] = loadImage( "especial"+ i + ".png" );
+      
+      especialesborde [i] = loadImage( "especial"+ i + "-1.png" );
       x_destino[i]=dondex;
       posx [i] = random(150, 400);
       posy [i] = height-500;
@@ -64,8 +68,12 @@ class FigEspeciales {
   }
   //metodos y funciones
   void dibujar () {     //dibuja uno solo
+  
+    image(especialesborde[1], px[1], py[1]);
+    pushStyle();
+     blendMode(LIGHTEST);
     image(especiales[1], px[1], py[1]);
-
+    popStyle();
     //Para que aparezcan más
     //for(int i = 0 ; i <cant ; i++){
     //  image(especiales[i], posX, posY);
