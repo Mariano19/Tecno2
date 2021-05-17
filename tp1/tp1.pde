@@ -1,7 +1,18 @@
-
-
 /*
-Posibles interacciones:
+
+ TECNO 2 2021- Integrantes: Mariano Quattrocchi, Isabella Pinto, Rocio Jauregui.
+ Artista seleccionado: László Moholy-Nagy
+ 
+ =================================
+ Interacciones con la voz
+ 
+ Las figuras suben en el lienzo con la amplitud del sonido captado por el microfono. 
+ La velocidad en la que suben, depende de cada figura, teniendo cada una un distinto factor de amortiguación.
+ 
+ Las figuras se acercan entre si con el pitch del sonido captado por el microfono.
+ 
+ =================================
+ Interacciones con el mouse
  
  El fondo cambia de color cuando el mouse gira en movimiento horario y antihorario
  
@@ -19,7 +30,8 @@ Posibles interacciones:
  vuelven al fondo 
  */
 
-//---------------------------------------------------------------------------------------------------------------------------
+
+//=====================================================================================
 
 import netP5.*;
 import oscP5.*;
@@ -29,9 +41,8 @@ Programa programa;
 void setup () {
   size (600, 700);
   colorMode(HSB); 
-  //rectMode(CORNER);
   imageMode(CENTER);
-  
+
   // Inicio objeto
   programa = new Programa();
 }

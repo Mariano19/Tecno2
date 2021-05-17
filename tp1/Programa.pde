@@ -61,7 +61,8 @@ class Programa {
     fill(0, 255, 0);
     ellipse(promedioPosX, promedioPosY, 50, 50);*/
 
-    float factor = map(mouseX, 0, width, -1, 1);
+    //float factor = map(mouseX, 0, width, -1, 1);
+    float factor = map(mouseX,0,width,-1,1);
     for (int i=0; i<1; i++) {
       //println(factor);
       px = lerp(circulo.posx[i], promedioPosX, factor);

@@ -1,4 +1,4 @@
-class Lineas{
+class Lineas {
   //variables locales
   int cant2 = 3; //CANTIDAD DE ELEMENTOS MOSTRADOS
   float limite_inferior = height-100;
@@ -18,6 +18,7 @@ class Lineas{
   float[] avance;
   float[] vel;
   float dondex;
+  float [] f;
   // Variables acercar
   float [] px = new float[cant];
   float [] py = new float[cant];
@@ -40,7 +41,7 @@ class Lineas{
     avance= new float[cant];
     vel= new float[cant];
     dondex=random(20, width-20);
-
+    f = new float [cant];
     shake = false;
     limite = random(height/2-70, height/2+70);   
 
@@ -58,8 +59,8 @@ class Lineas{
       posyDestino [i] = random(10, 250);
       avance [i] = 0;
       vel [i] = random(0.002, 0.007);
+      f[i] = random(0.5, 0.95);
     }
-
   }
 
   //Funciones
@@ -79,48 +80,62 @@ class Lineas{
     }
   }
 
-  void movimiento() {
-    pushStyle();
-    for (int i=0; i<cant; i++) {
-      //println(programa.inter.seMoviaEnElFrameAnterior);
-      if (programa.inter.movGrande) { 
-        //println( posy[i]);
-        if (avance [i]<1) {
-          avance[i] = avance[i]+vel[i];
-        }
-        posy[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
-
-        //shake   
-        if (posy[i]-height/6 <= posyDestino[i]) {
-          //posY=limite_superior;
-          shake = true;
-        } else {
-
-          shake = false;
-        }
-      } else if (programa.inter.seMoviaEnElFrameAnterior == false) {// cambio variable movPeque
-        //println( posyInicial[i]);
-        if (avance [i]<2) {
-          avance[i] = avance[i]-vel[i];
-          shake = false;
-        }  
-
-        posy[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
-        //posyInicial[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
-      }      
-      //println(sumX,sumY);
-    }
+  void movimiento() {     
+    //factor = map(mouseX, 0, width, -1, 1);
     factor = map(mouseX, 0, width, -1, 1);
 
-     for (int i=0; i<cant; i++) {
-      //println(factor);
+    for (int i = 0; i <cant; i++) {
+      posy[i]= map(programa.sonido.gestorAmp.filtradoNorm(), 0, 1, height, 0);
+    }
+
+    for (int i=0; i<cant; i++) {
       px[i] = lerp(posx[i], programa.promedioPosX, factor);
-      py[i] = lerp(posy[i], programa.promedioPosY, factor);
-      
-     }
-    //image(circulos[i], px, py);
-    popStyle();
+      py[i] = posyDestino[i] * (1-f[i])+ posy[i] * f[i];
+    }
   }
+
+  //void movimiento() {
+  //  pushStyle();
+  //  for (int i=0; i<cant; i++) {
+  //    //println(programa.inter.seMoviaEnElFrameAnterior);
+  //    if (programa.inter.movGrande) { 
+  //      //println( posy[i]);
+  //      if (avance [i]<1) {
+  //        avance[i] = avance[i]+vel[i];
+  //      }
+  //      posy[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
+
+  //      //shake   
+  //      if (posy[i]-height/6 <= posyDestino[i]) {
+  //        //posY=limite_superior;
+  //        shake = true;
+  //      } else {
+
+  //        shake = false;
+  //      }
+  //    } else if (programa.inter.seMoviaEnElFrameAnterior == false) {// cambio variable movPeque
+  //      //println( posyInicial[i]);
+  //      if (avance [i]<2) {
+  //        avance[i] = avance[i]-vel[i];
+  //        shake = false;
+  //      }  
+
+  //      posy[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
+  //      //posyInicial[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
+  //    }      
+  //    //println(sumX,sumY);
+  //  }
+  //  factor = map(mouseX, 0, width, -1, 1);
+
+  //   for (int i=0; i<cant; i++) {
+  //    //println(factor);
+  //    px[i] = lerp(posx[i], programa.promedioPosX, factor);
+  //    py[i] = lerp(posy[i], programa.promedioPosY, factor);
+
+  //   }
+  //  //image(circulos[i], px, py);
+  //  popStyle();
+  //}
 
 
 
@@ -158,4 +173,3 @@ class Lineas{
     popStyle();
   }
 }
-  

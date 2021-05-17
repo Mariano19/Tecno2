@@ -21,6 +21,7 @@ class FigEspeciales {
   float[] avance;
   float[] vel;
   float dondex;
+  float [] f;
   // Variables acercar
   float [] px = new float[cant];
   float [] py = new float[cant];
@@ -40,6 +41,7 @@ class FigEspeciales {
     posyDestino= new float[cant];
     avance= new float[cant];
     vel= new float[cant];
+    f = new float [cant];
     dondex=random(20, width-20);
     shake = false;
 
@@ -56,6 +58,7 @@ class FigEspeciales {
       posyDestino [i] = random(10, 250);
       avance [i] = 0;
       vel [i] = random(0.002, 0.007);
+      f[i] = random(0.8,0.9);
     }
   }
 
@@ -79,48 +82,62 @@ class FigEspeciales {
     //  image(especiales[i], posX, posY);
     //  }
   }  
+  
+    void movimiento() {     
+    factor = map(mouseX,0,width,-1,1);
 
-  void movimiento() {
-    pushStyle();
-    for (int i=0; i<cant; i++) {
-      //println(programa.inter.seMoviaEnElFrameAnterior);
-      if (programa.inter.movGrande) { 
-        //println( posy[i]);
-        if (avance [i]<1) {
-          avance[i] = avance[i]+vel[i];
-        }
-        posy[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
-
-        //shake   
-        if (posy[i]-height/6 <= posyDestino[i]) {
-          //posY=limite_superior;
-          shake = true;
-        } else {
-
-          shake = false;
-        }
-      } else if (programa.inter.seMoviaEnElFrameAnterior == false) {// cambio variable movPeque
-        //println( posyInicial[i]);
-        if (avance [i]<2) {
-          avance[i] = avance[i]-vel[i];
-          shake = false;
-        }  
-
-        posy[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
-        //posyInicial[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
-      }      
-      //println(sumX,sumY);
+    for (int i = 0; i <cant; i++) {
+      posy[i]= map(programa.sonido.gestorAmp.filtradoNorm(), 0, 1, height, 0);
+      
     }
-    factor = map(mouseX, 0, width, -1, 1);
 
     for (int i=0; i<cant; i++) {
-      //println(factor);
       px[i] = lerp(posx[i], programa.promedioPosX, factor);
-      py[i] = lerp(posy[i], programa.promedioPosY, factor);
+      py[i] = posyDestino[i] * (1-f[i])+ posy[i] * f[i];
     }
-    //image(circulos[i], px, py);
-    popStyle();
   }
+
+  //void movimiento() {
+  //  pushStyle();
+  //  for (int i=0; i<cant; i++) {
+  //    //println(programa.inter.seMoviaEnElFrameAnterior);
+  //    if (programa.inter.movGrande) { 
+  //      //println( posy[i]);
+  //      if (avance [i]<1) {
+  //        avance[i] = avance[i]+vel[i];
+  //      }
+  //      posy[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
+
+  //      //shake   
+  //      if (posy[i]-height/6 <= posyDestino[i]) {
+  //        //posY=limite_superior;
+  //        shake = true;
+  //      } else {
+
+  //        shake = false;
+  //      }
+  //    } else if (programa.inter.seMoviaEnElFrameAnterior == false) {// cambio variable movPeque
+  //      //println( posyInicial[i]);
+  //      if (avance [i]<2) {
+  //        avance[i] = avance[i]-vel[i];
+  //        shake = false;
+  //      }  
+
+  //      posy[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
+  //      //posyInicial[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
+  //    }      
+  //    //println(sumX,sumY);
+  //  }
+  //  factor = map(mouseX, 0, width, -1, 1);
+
+  //  for (int i=0; i<cant; i++) {
+  //    //println(factor);
+  //    px[i] = lerp(posx[i], programa.promedioPosX, factor);
+  //    py[i] = lerp(posy[i], programa.promedioPosY, factor);
+  //  }
+  //  //image(circulos[i], px, py);
+  //  popStyle();
+  //}
 
   /*
   void movimiento() {

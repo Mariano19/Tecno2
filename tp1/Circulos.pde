@@ -89,16 +89,17 @@ class Circulos {
 
   //====MOVIMIENTO CON SONIDO====
   void movimiento() {     
-    factor = map(programa.sonido.amp, 0, width, -1, 1);
+    //factor = map(mouseX, 0, width, -1, 1);
+    factor = map(mouseX,0,width,-1,1);
 
-    for (int i = 0; i <programa.circulo.cant; i++) {
+    for (int i = 0; i <cant; i++) {
       posy[i]= map(programa.sonido.gestorAmp.filtradoNorm(), 0, 1, height, 0);
+      
     }
 
     for (int i=0; i<cant; i++) {
       px[i] = lerp(posx[i], programa.promedioPosX, factor);
       py[i] = posyDestino[i] * (1-f[i])+ posy[i] * f[i];
-      //posy[i] * (1-f[i]) + posy[i] * f[i]; 
     }
   }
   //==========================

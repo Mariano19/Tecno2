@@ -5,7 +5,7 @@ class Sonido {
   //====================================
   //Variables de calibración
 
-  float maximoAmp = 85;
+  float maximoAmp = 105;
   float minimoAmp = 35;
 
   float minimoPitch = 60;
