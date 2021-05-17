@@ -21,11 +21,6 @@ class Sonido {
 
   float amp = 0.0;
   float pitch = 0.0;
-  boolean huboSonido;
-  boolean volPeque, volGrande;    
-  float tiempoGrande, tiempoPeque;
-  float [] posY;
-
   GestorSenial gestorAmp;
   GestorSenial gestorPitch;
 
@@ -34,11 +29,6 @@ class Sonido {
     osc = new OscP5(this, 12345);
     gestorAmp = new GestorSenial(minimoAmp, maximoAmp);
     gestorPitch = new GestorSenial( minimoPitch, maximoPitch );
-    posY= new float[5];
-    
-    for(int i = 0 ; i <5 ; i++){
-      posY[i] = 0;
-    }
   }
 
   //METODOS
@@ -51,20 +41,17 @@ class Sonido {
       pitch = m.get(0).floatValue();
     }
   }
+  
   void actualizar() {  
     //en cada fotograma hay que actualizar
     gestorAmp.actualizar( amp );
     gestorPitch.actualizar( pitch );
 
+    //Dibuja el gestor si monitor es verdadero.
     if (monitor) {
       gestorAmp.imprimir( 0, 0, 100, 50 );
       gestorPitch.imprimir( 0, 60, 100, 50);
-    }
-    
-    
-     //for(int i = 0 ; i <programa.circulo.cant ; i++){
-     // posY[i]= map(gestorAmp.filtradoNorm(), 0, 1, height-50, 0);
-     //}  
+    }        
   }
 
 }
