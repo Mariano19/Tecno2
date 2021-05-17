@@ -61,7 +61,7 @@ class Circulos {
       avance [i] = 0;
       vel [i] = random(0.002, 0.007);
 
-      f[i] = random(0.87, 0.95);
+      f[i] = random(0.4, 0.95);
     }
 
     circulos[1].resize(150, 150);
