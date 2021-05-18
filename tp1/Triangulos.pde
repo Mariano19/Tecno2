@@ -21,24 +21,29 @@ class Triangulos {
   float [] py;
   float [] posx;
   float [] posyDestino;
+  float [] posyInicial;
+  
+  int selector;
 
   
   //Constructor
   Triangulos() {    
-    
+    selector = int(random(0,1.9));
     f = new float [cant];
     posy = new float [cant];
     px= new float [cant];
     py= new float [cant];
     posx= new float [cant];
     posyDestino= new float [cant];
+    posyInicial = new float [cant];
     
     for (int i=0; i<cant; i++) {
       imgtriangulos[i]=loadImage("triangulo"+i+".png");
-      f[i] = random(0.5, 0.95);
+      f[i] = random(0.1, 1);
       posy[i] =height-50;
       posx[i] =random(50,width-10);
       posyDestino[i] =random(10,250);
+      posyInicial [i] = height-50;
       
     }
   }
@@ -50,9 +55,9 @@ class Triangulos {
   }
   
   void dibujar() {
-     for (int i=0; i<cant; i++) {      
-      image(imgtriangulos[i], px[i], py[i]);
-    }
+     
+      image(imgtriangulos[selector], px[0], py[0]);
+    
   }
   
       void movimiento() {     
@@ -65,8 +70,8 @@ class Triangulos {
     }
 
     for (int i=0; i<cant; i++) {
-      px[i] = lerp(posx[i], programa.promedioPosX, factor);
-      py[i] = posyDestino[i] * (1-f[i])+ posy[i] * f[i];
+      px[i] = lerp(posx[i], programa.promedioPosX,f[i]);
+      py[i] = lerp(posyInicial[i], programa.promedioPosY,f[i]);
     }
   }
 

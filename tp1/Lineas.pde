@@ -27,6 +27,9 @@ class Lineas {
   float promedioPosX;
   float promedioPosY;
   float factor;
+  //Seleccion de imagen
+  int selector1;
+  int selector2;
 
 
 
@@ -43,9 +46,16 @@ class Lineas {
     dondex=random(20, width-20);
     f = new float [cant];
     shake = false;
-    limite = random(height/2-70, height/2+70);   
+    limite = random(height/2-70, height/2+70);  
+     selector1 = int(random(0, 2.9));
+      selector2 = int(random(0,2.9));
 
-
+  //Para que nunca se dibuje la misma linea dos veces
+  if(selector1==selector2 && selector2>0){
+      selector2-=1;
+    }else if(selector1==selector2 && selector2==0){
+      selector2+=1;
+    }
 
 
     //asigno valores a todos
@@ -59,7 +69,7 @@ class Lineas {
       posyDestino [i] = random(10, 250);
       avance [i] = 0;
       vel [i] = random(0.002, 0.007);
-      f[i] = random(0.5, 0.95);
+      f[i] = random(0.1, 1);
     }
   }
 
@@ -75,22 +85,29 @@ class Lineas {
   }  
 
   void dibujar () {  //dibuja 
-    for (int i=0; i<cant; i++) {      
-      image(lineas[i], px[i], py[i]);
-    }
+    
+  
+      
+    image(lineas[selector1],px[0],py[0]);
+    image(lineas[selector2],px[1],py[1]);
+  
+  
+    //for (int i=0; i<cant; i++) {      
+    //  image(lineas[i], px[i], py[i]);
+    //}
   }
 
   void movimiento() {     
     //factor = map(mouseX, 0, width, -1, 1);
-    factor = map(mouseX, 0, width, -1, 1);
+    factor = map(programa.sonido.pitch, 0, width, -1, 1);
 
     for (int i = 0; i <cant; i++) {
       posy[i]= map(programa.sonido.gestorAmp.filtradoNorm(), 0, 1, height, 0);
     }
 
     for (int i=0; i<cant; i++) {
-      px[i] = lerp(posx[i], programa.promedioPosX, factor);
-      py[i] = posyDestino[i] * (1-f[i])+ posy[i] * f[i];
+      px[i] = lerp(posx[i], programa.promedioPosX, f[i]);
+      py[i] = lerp(posyInicial[i], programa.promedioPosY,f[i]);
     }
   }
 

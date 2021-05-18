@@ -26,9 +26,10 @@ class Programa {
   void actualizar() {
     fondo.actualizar();
     circulo.actualizar();
+    triangulo.actualizar();
     especiales.actualizar();
     inter.actualizar();
-    triangulo.actualizar();
+    
     linea.actualizar();
     calcularCentro();    
     sonido.actualizar();

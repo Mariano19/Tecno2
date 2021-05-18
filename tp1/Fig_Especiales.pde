@@ -7,7 +7,7 @@ class FigEspeciales {
   boolean shake;
   int cant = 3;
   PImage[] especiales = new PImage[cant];
- 
+
   PImage[] especialesborde = new PImage[cant];
   int num2 = int(random(cant));              //seleccion al azar del elemento  
 
@@ -30,6 +30,7 @@ class FigEspeciales {
   float promedioPosX;
   float promedioPosY;
   float factor;
+  int selector;
 
 
   //constructor y valores iniciales
@@ -44,12 +45,13 @@ class FigEspeciales {
     f = new float [cant];
     dondex=random(20, width-20);
     shake = false;
+    selector = int(random(0,2.9));
 
     //limite_superior = random(height/2-70, height/2+70);
     //imagen
     for ( int i = 0; i < cant; i++ ) {
       especiales [i] = loadImage( "especial"+ i + ".png" );
-      
+
       especialesborde [i] = loadImage( "especial"+ i + "-1.png" );
       x_destino[i]=dondex;
       posx [i] = random(150, 400);
@@ -58,107 +60,91 @@ class FigEspeciales {
       posyDestino [i] = random(10, 250);
       avance [i] = 0;
       vel [i] = random(0.002, 0.007);
-      f[i] = random(0.8,0.9);
+      f[i] = random(0.1, 1);
     }
   }
 
   void actualizar() {
     dibujar();
-    shaking();
+    //shaking();
     movimiento();
     limites();
     //debug();
   }
   //metodos y funciones
   void dibujar () {     //dibuja uno solo
-  
-    image(especialesborde[1], px[1], py[1]);
+    image(especialesborde[selector], px[1], py[1]);
     pushStyle();
-     blendMode(LIGHTEST);
-    image(especiales[1], px[1], py[1]);
+    blendMode(LIGHTEST);
+    image(especiales[selector], px[1], py[1]);
     popStyle();
     //Para que aparezcan más
     //for(int i = 0 ; i <cant ; i++){
     //  image(especiales[i], posX, posY);
     //  }
   }  
-  
-    void movimiento() {     
-    factor = map(mouseX,0,width,-1,1);
+
+  //=======MOVIMIENTO CON SONIDO=============
+  void movimiento() {     
+    factor = map(programa.sonido.pitch, 0, width, -1, 1);
 
     for (int i = 0; i <cant; i++) {
       posy[i]= map(programa.sonido.gestorAmp.filtradoNorm(), 0, 1, height, 0);
-      
     }
 
     for (int i=0; i<cant; i++) {
-      px[i] = lerp(posx[i], programa.promedioPosX, factor);
-      py[i] = posyDestino[i] * (1-f[i])+ posy[i] * f[i];
+      px[i] = lerp(posx[i], programa.promedioPosX, f[i]);
+      py[i] = lerp(posyInicial[i], programa.promedioPosY, f[i]);
     }
   }
 
-  //void movimiento() {
-  //  pushStyle();
-  //  for (int i=0; i<cant; i++) {
-  //    //println(programa.inter.seMoviaEnElFrameAnterior);
-  //    if (programa.inter.movGrande) { 
-  //      //println( posy[i]);
-  //      if (avance [i]<1) {
-  //        avance[i] = avance[i]+vel[i];
-  //      }
-  //      posy[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
-
-  //      //shake   
-  //      if (posy[i]-height/6 <= posyDestino[i]) {
-  //        //posY=limite_superior;
-  //        shake = true;
-  //      } else {
-
-  //        shake = false;
-  //      }
-  //    } else if (programa.inter.seMoviaEnElFrameAnterior == false) {// cambio variable movPeque
-  //      //println( posyInicial[i]);
-  //      if (avance [i]<2) {
-  //        avance[i] = avance[i]-vel[i];
-  //        shake = false;
-  //      }  
-
-  //      posy[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
-  //      //posyInicial[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
-  //    }      
-  //    //println(sumX,sumY);
-  //  }
-  //  factor = map(mouseX, 0, width, -1, 1);
-
-  //  for (int i=0; i<cant; i++) {
-  //    //println(factor);
-  //    px[i] = lerp(posx[i], programa.promedioPosX, factor);
-  //    py[i] = lerp(posy[i], programa.promedioPosY, factor);
-  //  }
-  //  //image(circulos[i], px, py);
-  //  popStyle();
-  //}
-
+  //=======MOVIMIENTO CON MOUSE=============
   /*
   void movimiento() {
-   if (programa.inter.movGrande) {     
-   //Si el circulo llega al limite de Y, se queda quieto y comienza a temblar.
-   if (posY <= limite_superior) {
-   posY=limite_superior;
-   shake=true;
-   } else {
-   posY --;
-   shake=false;
-   }
-   } else if (programa.inter.seMoviaEnElFrameAnterior == false) {// cambio variable movPeque
-   if (posY>= limite_inferior) {
-   posY=limite_inferior;
-   } else {
-   posY ++;
-   shake=false;
-   }
-   }
-   }*/
+    pushStyle();
+    for (int i=0; i<cant; i++) {
+      //println(programa.inter.seMoviaEnElFrameAnterior);
+      if (programa.inter.movGrande) { 
+        //println( posy[i]);
+        if (avance [i]<1) {
+          avance[i] = avance[i]+vel[i];
+        }
+        posy[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
+
+        //shake   
+        if (posy[i]-height/6 <= posyDestino[i]) {
+          //posY=limite_superior;
+          shake = true;
+        } else {
+
+          shake = false;
+        }
+      } else if (programa.inter.seMoviaEnElFrameAnterior == false) {// cambio variable movPeque
+        //println( posyInicial[i]);
+        if (avance [i]<2) {
+          avance[i] = avance[i]-vel[i];
+          shake = false;
+        }  
+
+        posy[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
+        //posyInicial[i] = lerp(posyInicial[i], posyDestino[i], avance[i]);
+      }      
+      //println(sumX,sumY);
+    }
+    factor = map(mouseX, 0, width, -1, 1);
+
+    for (int i=0; i<cant; i++) {
+      //println(factor);
+      px[i] = lerp(posx[i], programa.promedioPosX, factor);
+      py[i] = lerp(posy[i], programa.promedioPosY, factor);
+    }
+    //image(circulos[i], px, py);
+    popStyle();
+  }
+  */
+
+
+
   void limites() {
     for (int i=0; i<cant; i++) {
       if (posy[i] >= limite_inferior) {
@@ -170,26 +156,13 @@ class FigEspeciales {
     }
   }
 
-  void shaking() {
-    for (int i=0; i<cant; i++) {
-      if (shake) {
-        posx[i]=random(posx[i]-1, posx[i]+1);
-      } else {
-        // posX=posX_inicial;
-      }
-    }
-  }
-  
-  //void debug() {
-  //  pushStyle();
-  //  fill(255, 0, 0);
-  //  textSize(24);
-  //  text("POSY " + posy[1], 50, 50);
-  //  text("AVANCE " +avance[1], 50, 80);
-  //  text("VEL " + vel[1], 50, 110);
-  //  text("POSX " + posx[1], 50, 140);
-  //  //text("PX " + px, 50, 170);
-
-  //  popStyle();
+  //void shaking() {
+  //  for (int i=0; i<cant; i++) {
+  //    if (shake) {
+  //      posx[i]=random(posx[i]-1, posx[i]+1);
+  //    } else {
+  //      // posX=posX_inicial;
+  //    }
+  //  }
   //}
 }

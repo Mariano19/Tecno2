@@ -5,15 +5,15 @@ class Sonido {
   //====================================
   //Variables de calibración
 
-  float maximoAmp = 80;
-  float minimoAmp = 40;
+  float maximoAmp = 90;
+  float minimoAmp = 34;
 
-  float minimoPitch = 60;
+  float minimoPitch = 55;
   float maximoPitch = 96;
 
   float f = 0.9;  
 
-  boolean monitor = true; //True= Se muestra el monitor, False=Se oculta.
+  boolean monitor = false; //True= Se muestra el monitor, False=Se oculta.
 
   //====================================
   

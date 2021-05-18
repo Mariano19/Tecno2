@@ -11,6 +11,8 @@
  
  Las figuras se acercan entre si con el pitch del sonido captado por el microfono.
  
+ El fondo se torna blanco si el pitch es alto, y se pone amarillo si el pitch es bajo.
+ 
  =================================
  Interacciones con el mouse
  
