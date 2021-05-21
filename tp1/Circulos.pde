@@ -8,7 +8,7 @@ class Circulos {
   float limite_inferior = height-50;
   boolean shake;
   float limite;
-  int cant = 5;
+  int cant = 6;
   PImage[] circulos = new PImage[cant];
   int num2 = int(random(cant)); //seleccion al azar del elemento
 
@@ -50,8 +50,16 @@ class Circulos {
     avance= new float[cant];
     vel= new float[cant];
     f = new float [cant];
-     selector1 = int(random(0, 1.9));
-      selector2 = int(random(2, 4));
+     //selector1 = int(random(0, 1.9));
+     // selector2 = int(random(2, 5));
+     selector1 = int(random(0, 5.9));
+      selector2 = int(random(0,5.9));
+      
+      if(selector1==selector2 && selector2>0){
+      selector2-=1;
+    }else if(selector1==selector2 && selector2==0){
+      selector2+=1;
+    }
 
     //asigno valores a todos
     for ( int i = 0; i < cant; i++ ) {
@@ -73,8 +81,9 @@ class Circulos {
     //Resize de las imagenes    
     circulos[0].resize(170, 170);
     circulos[1].resize(170, 170);
-    circulos[2].resize(80, 80);
-    circulos[3].resize(80, 80);
+    circulos[2].resize(100, 100);
+    circulos[3].resize(90, 90);
+    circulos[5].resize(400, 400);
   }
 
   //Funciones
