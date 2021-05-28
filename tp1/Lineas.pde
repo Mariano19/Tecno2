@@ -19,6 +19,9 @@ class Lineas {
   float[] vel;
   float dondex;
   float [] f;
+  float r1=0;
+  float r2=0;
+  float a = 0;
   // Variables acercar
   float [] px = new float[cant];
   float [] py = new float[cant];
@@ -47,13 +50,13 @@ class Lineas {
     f = new float [cant];
     shake = false;
     limite = random(height/2-70, height/2+70);  
-     selector1 = int(random(0, 2.9));
-      selector2 = int(random(0,2.9));
+    selector1 = int(random(0, 2.9));
+    selector2 = int(random(0, 2.9));
 
-  //Para que nunca se dibuje la misma linea dos veces
-  if(selector1==selector2 && selector2>0){
+    //Para que nunca se dibuje la misma linea dos veces
+    if (selector1==selector2 && selector2>0) {
       selector2-=1;
-    }else if(selector1==selector2 && selector2==0){
+    } else if (selector1==selector2 && selector2==0) {
       selector2+=1;
     }
 
@@ -74,24 +77,30 @@ class Lineas {
   }
 
   //Funciones
-
   void actualizar() {
     dibujar();
     shaking();
     movimiento();
     limites();
+    rotacion();
     //debug();
     //calcular();
   }  
 
   void dibujar () {  //dibuja 
-    
-  
-      
-    image(lineas[selector1],px[0],py[0]);
-    image(lineas[selector2],px[1],py[1]);
-  
-  
+
+    pushMatrix();
+    translate(px[0], py[0]);
+    rotate(r1);
+    image(lineas[selector1], 0, 0);
+    popMatrix();
+    pushMatrix();
+    translate(px[1], py[1]);
+    rotate(r2);
+    image(lineas[selector2], 0, 0);
+    popMatrix();
+
+
     //for (int i=0; i<cant; i++) {      
     //  image(lineas[i], px[i], py[i]);
     //}
@@ -116,22 +125,33 @@ class Lineas {
       //posyDestino[i] * (1-f[i])+ posy[i] * f[i];
     }
   }
-  
+
+  void rotacion() {
+    float a = 90;
+    float b = 90;
+    
+    a = map(programa.sonido.gestorAmp.filtradoNorm(), 0, 1, 90, 0);
+    b = map(programa.sonido.gestorAmp.filtradoNorm(), 0, 1, 90, 180);
+    
+    r1 = radians(a);
+    r2 = radians(b);
+  }
+
   /*
   void movimiento() {     
-    //factor = map(mouseX, 0, width, -1, 1);
-    factor = map(programa.sonido.pitch, 0, width, -1, 1);
-
-    for (int i = 0; i <cant; i++) {
-      posy[i]= map(programa.sonido.gestorAmp.filtradoNorm(), 0, 1, height, 0);
-    }
-
-    for (int i=0; i<cant; i++) {
-      px[i] = lerp(posx[i], programa.promedioPosX, f[i]);
-      py[i] = lerp(posyInicial[i], programa.promedioPosY,f[i]);
-    }
-  }
-  */
+   //factor = map(mouseX, 0, width, -1, 1);
+   factor = map(programa.sonido.pitch, 0, width, -1, 1);
+   
+   for (int i = 0; i <cant; i++) {
+   posy[i]= map(programa.sonido.gestorAmp.filtradoNorm(), 0, 1, height, 0);
+   }
+   
+   for (int i=0; i<cant; i++) {
+   px[i] = lerp(posx[i], programa.promedioPosX, f[i]);
+   py[i] = lerp(posyInicial[i], programa.promedioPosY,f[i]);
+   }
+   }
+   */
   //void movimiento() {
   //  pushStyle();
   //  for (int i=0; i<cant; i++) {
