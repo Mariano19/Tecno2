@@ -1,5 +1,5 @@
 # Tecno2
-Grupo Tecno 2
+Comisión Lisandro
 
 Isabella Pinto
 Mariano Quattrocchi
