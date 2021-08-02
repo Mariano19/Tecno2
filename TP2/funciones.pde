@@ -11,19 +11,23 @@ void iniciar() {
   //mundo.remove(mundo.right);
   //mundo.remove(mundo.top);
 
-  //=======
-  //BODIES
-  bola = new Bola();
-  cesto = new Cesto();
-  moneda = new Moneda();
+ 
+    //=======
+    //BODIES
+    bola = new Bola();
+    cesto = new Cesto();
+    moneda = new Moneda();
 
-  //Agrego los BODIES
-  mundo.add( bola );
-  mundo.add( cesto );
-  mundo.add( moneda );
+    //Agrego los BODIES
+    mundo.add( bola );
+    mundo.add( cesto );
+    mundo.add( moneda );
+
+
+  
 }
-
 void escenario() {
+ 
   //plataformas
   FBox plataforma1 = new FBox(500, 10);
   plataforma1.setFill(0);
@@ -82,7 +86,7 @@ void contactStarted(FContact contacto) {
   FBody body2 = contacto.getBody2();
 
   if (body1.getName() != null && body2.getName() != null) {
-    
+
     //SI LA BOLA TOCA A LA MONEDA LA MONEDA DESAPARECE
     if (body1.getName()=="bola" || body2.getName()=="bola" && body1.getName()=="moneda" || body2.getName()=="moneda") {
       mundo.remove(moneda);
@@ -92,8 +96,7 @@ void contactStarted(FContact contacto) {
     //SI LA BOLA TOCA AL CESTO SE GANA
     else if (body1.getName()=="bola" || body2.getName()=="bola" && body1.getName()=="cesto" || body2.getName()=="cesto") {
       estado="win";
-    }    
-    
+    }
   } else {
     //Si toca los edges de mundo se pierde (Habría que hacer que solo se pierda si se choca el mundo.bottom, pero no se como hacerlo)
     estado="lose";
