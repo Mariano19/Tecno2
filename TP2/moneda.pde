@@ -17,6 +17,7 @@ class Moneda extends FCircle {
     setStatic(true);
     setGrabbable(false);
     setVelocity(0, 0);
+    setSensor(true);
     //aplico una posicion inicial
     setPosition( random(2000, width-50), random(100, height-50) );
   }

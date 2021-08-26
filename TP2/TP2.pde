@@ -11,6 +11,7 @@ FWorld mundo;
 Portada portada;
 Creditos creditos;
 Instr instr;
+Trazos[] trazos;
 //FPoly poly;
 FCircle trazo;
 Bola bola;
@@ -46,6 +47,10 @@ color fondo = color(255);
 int score;
 int i=0;
 
+
+//ArrayList
+ArrayList<Trazos> trazoAL;
+
 //estados del juego
 String estado;
 
@@ -58,7 +63,7 @@ float step2 = 0.9;
 float pos2=910;
 
 void setup() {
-
+  trazoAL = new ArrayList<Trazos>();
 
   noCursor();
   textAlign(CENTER);
@@ -127,7 +132,7 @@ void draw() {
     image(fondoimg, 2899+i, 0);
   }
 
-  borrarTrazo();
+  //borrarTrazo();
   portada.dibujar();
   creditos.dibujar();
   instr.dibujar();
@@ -140,7 +145,13 @@ void draw() {
     movAgua();
     movAgua2();
 
-
+    for(int i =trazoAL.size()-1;i>=0;i--){
+      trazoAL.get(i).actualizarMatar();
+      if(trazoAL.get(i).muerto){
+        mundo.remove(trazoAL.get(i));
+        trazoAL.remove(i);
+      }
+    }
 
     //PUNTAJE
     fill(0);
@@ -207,8 +218,11 @@ void mousePressed() {
 
 void mouseDragged() {
   if (estado.equals("juego")) {
-    trazo();
-    
+    Trazos trazo = new Trazos(16);
+    trazo.setPosition(mouseX+bola.getX()-300, mouseY+bola.getY()-470);
+    mundo.add(trazo);
+    trazoAL.add(trazo);
+    //trazo();    
   }
 }
 

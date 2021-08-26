@@ -24,7 +24,7 @@ void iniciar() {
   //Agrego los BODIES
   mundo.add( bola );
   mundo.add( cesto );
-  mundo.add( moneda ); 
+  //mundo.add( moneda ); 
     
 
 }
@@ -179,54 +179,6 @@ void movAgua2(){
   image(aguavisual2,1400,pos2-20);
 }
 
-//funciones dibujo
-
-void trazo() {
-
-  //DIBUJO TRAZO NUEVO
-  trazo = new FCircle(5);
-  trazo.setStrokeWeight(10);
-  trazo.setStaticBody(true);
-  trazo.setStroke(100);
-  trazo.setFill(100);
-  trazo.setDamping(0);
-  trazo.setRestitution(0);
-  trazo.setFriction(0);
-  trazo.setPosition(mouseX+bola.getX()-300, mouseY+bola.getY()-470);
-  trazo.setAllowSleeping(true);
-  trazo.setBullet(true);
-  trazo.setName("trazo");
-  mundo.add(trazo);
-}
-
-void borrarTrazo(){
-  ArrayList <FBody> cuerpos = mundo.getBodies();
-  
-  
-  for ( FBody este : cuerpos ) {
-    String nombre = este.getName();
-    if ( nombre != null ) {
-      if ( nombre.equals("trazo") ) {
-        //println(este.isSleeping(), bola.getX(),bola.getVelocityX());
-        //start timer 5seg
-        //t = millis() + ms;
-        //timer = new Timer(5000);
-        //timer.start();
-        
-        if (este.isSleeping()) {
-          mundo.remove( este );
-          //timer.start();
-        }
-        /*if (bola.getVelocityX() < 0) {
-          mundo.remove( este );
-          
-        }*/
-      }
-    }
-  }
-  
-  
-}
 //==================================
 // ANALISÍS DE CONTACTO
 
@@ -242,6 +194,7 @@ void contactStarted(FContact contacto) {
       score +=1;
       estado="juego";
     } 
+   
     //SI LA BOLA TOCA AL CESTO SE GANA
     else if (body1.getName()=="bola" || body2.getName()=="bola" && body1.getName()=="cesto" || body2.getName()=="cesto") {
       estado="win";
