@@ -1,3 +1,5 @@
+import gab.opencv.*;
+import processing.video.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
@@ -9,10 +11,11 @@ import fisica.*;
 //clases 
 FWorld mundo;
 Portada portada;
+Ganar ganar;
+Perder perder;
 Creditos creditos;
 Instr instr;
 Trazos[] trazos;
-//FPoly poly;
 FCircle trazo;
 Bola bola;
 Cesto cesto;
@@ -21,34 +24,27 @@ Plataforma plataforma;
 Obstaculo obstaculo;
 Minim minim;
 
-
 //Sonido
 AudioPlayer musica;
 AudioPlayer bounce;
 AudioPlayer blob;
 
-//Declaro imagenes
-PImage aguavisual;
-PImage aguavisual2;
-PImage fondoimg;
-PImage ganaste;
-PImage perdiste;
-PImage cursor;
-PImage[] plat = new PImage[5];
-PImage[] nubes = new PImage [2];
-PImage arbol;
-PFont kinder;
+//=================================
+//CALIBRACIÓN DEL VIDEO
 
-PImage instrucciones;
+Capture camara;
+OpenCV opencv;
+int ancho = 640;//ancho de la camara(no funciona ahora mismo)
+int alto = 480;//alto de la camara(no funciona ahora mismo)
+int umbral = 250;//umbral de luz (0-255) Modificar según situación de luz
+//==============================
 
 
-//Color fondo
 color fondo = color(255);
 int score;
 int i=0;
 
-
-//ArrayList
+//ArrayList de trazos
 ArrayList<Trazos> trazoAL;
 
 //estados del juego
@@ -63,96 +59,99 @@ float step2 = 0.9;
 float pos2=910;
 
 void setup() {
-  trazoAL = new ArrayList<Trazos>();
-
+  size( 1280, 720 );
   noCursor();
   textAlign(CENTER);
   rectMode(CORNER);
+  estado = "portada";
+  Fisica.init(this);
+  iniciar();
+  escenario();
+
+  trazoAL = new ArrayList<Trazos>();  
   portada = new Portada();
+  ganar = new Ganar();
+  perder = new Perder();
   creditos = new Creditos();
   instr = new Instr();
-  score = 0;
-  size( 1280, 720 );
-  estado = "portada";
-  kinder = loadFont("Kindergarten-48.vlw");
-  
+  score = 0;  
 
-  //Imagenes obstaculos
-  aguavisual = loadImage("aguav1.png");
-  aguavisual2 = loadImage("aguav2.png");
-  
-  //Imagenes    
-  fondoimg = loadImage("fondo2.png");
-  arbol = loadImage("arbol.png");
-  cursor = loadImage("pencil.png");
-  cursor.resize(40, 40);
 
-  ganaste = loadImage("ganaste.png");
-  perdiste = loadImage("perdiste.png");   
-  instrucciones = loadImage("instrucciones.png");
 
-  //sonido
+
+  //====VIDEO===================================
+  String[] listaDeCamaras = Capture.list(); //Devuelve una lista de todas las camaras disponibles
+  printArray(listaDeCamaras); //Imprime la lista
+  camara = new Capture( this, listaDeCamaras[1]); //Selecciona que camara usar
+  //camara = new Capture(this,ancho,alto)  //Utiliza la primer camara que encuentra
+  camara.start();
+  opencv = new OpenCV(this, ancho, alto);
+  //==============================================
+
+  //====SONIDO===================================
   minim = new Minim(this);
   musica = minim.loadFile("musica.mp3", 2048);
   bounce = minim.loadFile("bounce.wav", 2048);
-
   blob = minim.loadFile("blob.mp3", 2048);
   blob.setGain(-10.0);
   bounce.setGain(-10.0);
-  sonido();
-
-
-
-  //plat1 = loadImage("plat1.png"); 
-  for (int i=0; i<5; i++) {
-    plat[i]=loadImage("plat"+i+".png");
-  }
-
-  for (int i=0; i<2; i++) {
-    nubes[i]=loadImage("nube"+i+".png");
-  }
-
-
-
-  //iniciar Fisica
-  Fisica.init(this);
-
-  iniciar();
-  escenario();
+  sonido();  
+  //==============================================
 }
 
 void draw() {
 
-  println("ESTADO: "+ estado);
-  background(0);
-  debug();
   i -=1;
+  portada.dibujar();
+  creditos.dibujar();
+  instr.dibujar();
+
+  //Estado juego sin translate
   if (estado.equals("juego")) {
     image(fondoimg, i, 0);
     image(fondoimg, 2899+i, 0);
   }
 
-  //borrarTrazo();
-  portada.dibujar();
-  creditos.dibujar();
-  instr.dibujar();
-
-  //Estado juego
+  //Estado juego con translate
   if (estado.equals("juego")) {    
     mundo.step();
     translate( 300-bola.getX(), 450-bola.getY() ); //mueve la camara con la bola
-    
+
     movAgua();
     movAgua2();
 
-    for(int i =trazoAL.size()-1;i>=0;i--){
+    //HACER QUE EL TRAZADO DESAPAREZCA 
+    for (int i =trazoAL.size()-1; i>=0; i--) {
       trazoAL.get(i).actualizarMatar();
-      if(trazoAL.get(i).muerto){
+      if (trazoAL.get(i).muerto) {
         mundo.remove(trazoAL.get(i));
         trazoAL.remove(i);
       }
     }
 
+    //========VIDEO============
+    if (camara.available()) {
+      camara.read();
+      //cargo en OpenCv la imagen de la camara
+      opencv.loadImage( camara );
+      //aplico el umbral
+      opencv.threshold(umbral);
+
+      PImage salida = opencv.getOutput();
+      //Dibujo la camara en el canvas
+      image(salida, bola.getX()-150, bola.getY()-400);
+
+      //Devuelve el punto más brillante de la camara
+      PVector pixelMasBrillante = opencv.max();
+
+      //Hago el trazo en las cordenadas del pixel más brillante
+      Trazos trazo = new Trazos(16);
+      trazo.setPosition(pixelMasBrillante.x, pixelMasBrillante.y);
+      mundo.add(trazo);
+      trazoAL.add(trazo);
+    }
+    //============================
+    
     //PUNTAJE
     fill(0);
     textFont(kinder);
@@ -161,19 +160,15 @@ void draw() {
     text("Presiona R para reiniciar", bola.getX()+800, bola.getY()-400);
     image(instrucciones, -50, 200);
 
+
     mundo.draw();
-    
-    if (bola.getX() < width-600){    //hace lenta la bola para las instrucciones y luego acelera  
-       bola.actualizarvel1();
-    }
-    else {
+
+    if (bola.getX() < width-600) {    //hace lenta la bola para las instrucciones y luego acelera  
+      bola.actualizarvel1();
+    } else {
       bola.actualizarvel2();
     }
-    
-    //dibujo mientras se crea la forma
-    /*if (poly != null) {
-     poly.draw(this);
-     }*/
+
     pushStyle();
     imageMode(CORNER);
     image(cursor, mouseX+bola.getX()-300, mouseY+bola.getY()-470);
@@ -182,29 +177,13 @@ void draw() {
 
   //Estado ganador/perdedor
   if (estado.equals("win")) {
-    pushStyle();
-    fondo = color(0, 255, 0);
-    //fill(fondo);
-    //rect(0, 0, width*4, height);    
-    image(ganaste, 0, 0);
-    textSize(40);    
-    fill(0);
-    text("Puntaje:" + score, width/2, height/2 + 20);
-
-    popStyle();
+    ganar.pantalla();
   } else if (estado.equals("lose")) {
-    pushStyle();
-    fondo = color(255, 0, 0);
-    image(perdiste, 0, 0);
-    fill(0);
-    textSize(40);
-    text("Puntaje:" + score, width/2, height/2 + 20);
-    popStyle();
+    perder.pantalla();
   }
 }
 
 void mousePressed() {  
-  
   if (estado.equals("portada")) {
     portada.jugar();
   }
@@ -213,16 +192,6 @@ void mousePressed() {
   }
   if (estado.equals("instrucciones")) {
     instr.volver();
-  }
-}
-
-void mouseDragged() {
-  if (estado.equals("juego")) {
-    Trazos trazo = new Trazos(16);
-    trazo.setPosition(mouseX+bola.getX()-300, mouseY+bola.getY()-470);
-    mundo.add(trazo);
-    trazoAL.add(trazo);
-    //trazo();    
   }
 }
 
@@ -241,19 +210,5 @@ void keyPressed() {
     escenario();
     score = 0;
     i = 0;
-  } 
-
-  //test//////////////////////////////////////////////////////////////
-  if ( estado.equals("juego") && keyCode == RIGHT) {    
-    bola.setPosition( bola.xOriginal +=200, bola.yOriginal );
-  }
-  if ( estado.equals("juego") && keyCode == LEFT) {    
-    bola.setPosition( bola.xOriginal -=200, bola.yOriginal );
-  }
-  if ( estado.equals("juego") && keyCode == UP) {    
-    bola.setPosition( bola.xOriginal, bola.yOriginal -=100);
-  }
-  if ( estado.equals("juego") && keyCode == DOWN) {    
-    bola.setPosition( bola.xOriginal, bola.yOriginal +=100);
   }
 }

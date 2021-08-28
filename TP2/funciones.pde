@@ -1,5 +1,40 @@
-void iniciar() {
+//Declaro imagenes
+PImage aguavisual;
+PImage aguavisual2;
+PImage fondoimg;
+PImage ganaste;
+PImage perdiste;
+PImage cursor;
+PImage[] plat = new PImage[5];
+PImage[] nubes = new PImage [2];
+PImage arbol;
+PFont kinder;
+PImage instrucciones;
 
+
+
+void iniciar() {
+  kinder = loadFont("Kindergarten-48.vlw");
+  for (int i=0; i<5; i++) {
+    plat[i]=loadImage("plat"+i+".png");
+  }
+
+  for (int i=0; i<2; i++) {
+    nubes[i]=loadImage("nube"+i+".png");
+  }
+  //Imagenes obstaculos
+  aguavisual = loadImage("aguav1.png");
+  aguavisual2 = loadImage("aguav2.png");
+
+  //Imagenes    
+  fondoimg = loadImage("fondo2.png");
+  arbol = loadImage("arbol.png");
+  cursor = loadImage("pencil.png");
+  cursor.resize(40, 40);
+
+  ganaste = loadImage("ganaste.png");
+  perdiste = loadImage("perdiste.png");   
+  instrucciones = loadImage("instrucciones.png");
 
   //inicializando el mundo
   mundo = new FWorld(-width, -height, 4*width, 2*height);
@@ -13,8 +48,8 @@ void iniciar() {
   //mundo.remove(mundo.right);
   mundo.remove(mundo.top);
 
-   //img
-   
+  //img
+
   //=======
   //BODIES
   bola = new Bola();
@@ -24,9 +59,7 @@ void iniciar() {
   //Agrego los BODIES
   mundo.add( bola );
   mundo.add( cesto );
-  //mundo.add( moneda ); 
-    
-
+  //mundo.add( moneda );
 }
 
 
@@ -65,29 +98,29 @@ void escenario() {
   piso5.setRotation(radians(0));
   mundo.add( piso5 );
   piso5.attachImage(loadImage("piso4.png"));
-  
-  
+
+
   //paredes
   Plataforma pared1 = new Plataforma(10, 400);    
   pared1.inicializar (1390, 800, true);
   pared1.setRotation(radians(0));
   mundo.add( pared1 );
-  
+
   Plataforma pared2 = new Plataforma(10, 400);    
   pared2.inicializar (2190, 860, true);
   pared2.setRotation(radians(0));
   mundo.add( pared2 );
-  
+
   Plataforma pared3 = new Plataforma(10, 400);    
   pared3.inicializar (3165, 930, true);
   pared3.setRotation(radians(0));
   mundo.add( pared3 );
-  
+
   Plataforma pared4 = new Plataforma(10, 400);    
   pared4.inicializar (3960, 830, true);
   pared4.setRotation(radians(0));
   mundo.add( pared4 );
-  
+
 
 
   //Plataforma1
@@ -95,14 +128,14 @@ void escenario() {
   plataforma1.inicializar (1700, 900, false);   
   plataforma1.setName("plataforma1");
   mundo.add( plataforma1 );  
-  plataforma1.setFill(0,255,0);
+  plataforma1.setFill(0, 255, 0);
 
   //Plataforma2
   Plataforma plataforma2 = new Plataforma(300, 10); 
   plataforma2.inicializar (2500, 700, false);
   plataforma2.setRotation(radians(0));
   plataforma2.setRestitution(1.3); //le subi esto para hacerlo un poco más fácil
-  plataforma2.setFill(255,0,0);
+  plataforma2.setFill(255, 0, 0);
   plataforma2.setName("plataforma2");
   mundo.add( plataforma2 );  
 
@@ -112,9 +145,9 @@ void escenario() {
   plataforma3.setRotation(radians(0)); 
   plataforma3.setName("plataforma3");
   plataforma3.setRestitution(1.3);
-  plataforma3.setFill(0,0,255);
+  plataforma3.setFill(0, 0, 255);
   mundo.add( plataforma3 );  
-  
+
 
   //Plataforma4
   Plataforma plataforma4 = new Plataforma(100, 10); 
@@ -122,7 +155,7 @@ void escenario() {
   plataforma4.setRotation(radians(0)); 
   plataforma4.setName("plataforma4");
   mundo.add( plataforma4 );    
-  plataforma4.setFill(255,255,0);
+  plataforma4.setFill(255, 255, 0);
 
 
 
@@ -131,7 +164,7 @@ void escenario() {
   agua1.inicializar (1800, 1050);   
   agua1.setName("agua1");
   mundo.add( agua1 );  
- 
+
 
   Obstaculo agua2 = new Obstaculo(750, 200, "agua"); 
   agua2.inicializar (3550, 950);   
@@ -143,7 +176,7 @@ void escenario() {
   arbol.inicializar (2720, 550);   
   arbol.setName("arbol");
   mundo.add( arbol );
- 
+
 
   Obstaculo nube1 = new Obstaculo(250, 100, "nube"); 
   nube1.inicializar (random(2020, 2500), 150);   
@@ -160,23 +193,23 @@ void escenario() {
 
 
 //Movimiento visual agua
-void movAgua(){ 
+void movAgua() { 
   pos = pos + (step*dir); 
   //line(200, pos, 50, pos); 
   if (pos >= 1000 || pos <= 900 ) { 
     dir = dir * -1;
   }
-  image(aguavisual,1400,pos);
+  image(aguavisual, 1400, pos);
   //image(aguavisual2,1400,pos-10);
 }
-void movAgua2(){ 
+void movAgua2() { 
   pos2 = pos2 + (step2*dir2); 
   //line(200, pos, 50, pos); 
   if (pos2 >= 1000 || pos2 <= 900 ) { 
     dir2 = dir2 * -1;
   }
   //image(aguavisual,1400,pos);
-  image(aguavisual2,1400,pos2-20);
+  image(aguavisual2, 1400, pos2-20);
 }
 
 //==================================
@@ -194,7 +227,7 @@ void contactStarted(FContact contacto) {
       score +=1;
       estado="juego";
     } 
-   
+
     //SI LA BOLA TOCA AL CESTO SE GANA
     else if (body1.getName()=="bola" || body2.getName()=="bola" && body1.getName()=="cesto" || body2.getName()=="cesto") {
       estado="win";
@@ -205,10 +238,9 @@ void contactStarted(FContact contacto) {
       bounce.rewind();
     } 
     //SI TOCA AGUA PIERDE
-    else if(body1.getName()=="bola" || body2.getName()=="bola" && body1.getName()=="agua1" || body2.getName()=="agua1" || body1.getName()=="agua2" || body2.getName()=="agua2"){
+    else if (body1.getName()=="bola" || body2.getName()=="bola" && body1.getName()=="agua1" || body2.getName()=="agua1" || body1.getName()=="agua2" || body2.getName()=="agua2") {
       estado="lose";
     }
-    
   } else {
     //Si toca los edges de mundo se pierde (Habría que hacer que solo se pierda si se choca el mundo.bottom, pero no se como hacerlo)
     estado="lose";
@@ -216,10 +248,10 @@ void contactStarted(FContact contacto) {
 }
 
 void sonido() {
-  musica.loop();  
+  musica.loop();
 }
 
 //DEBuG
-void debug() {  
-  println(frameRate, "|| Posx*bola  " + bola.getX(), (mouseX+bola.getX()-300) + " || posxMouse absoluto" + mouseX, bola.getVelocityX());
-}
+//void debug() {  
+//  println(frameRate, "|| Posx*bola  " + bola.getX(), (mouseX+bola.getX()-300) + " || posxMouse absoluto" + mouseX, bola.getVelocityX());
+//}
