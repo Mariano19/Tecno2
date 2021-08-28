@@ -139,14 +139,14 @@ void draw() {
 
       PImage salida = opencv.getOutput();
       //Dibujo la camara en el canvas
-      image(salida, bola.getX()-150, bola.getY()-400);
+      image(salida, bola.getX()-150, bola.getY()-300);
 
       //Devuelve el punto más brillante de la camara
       PVector pixelMasBrillante = opencv.max();
 
       //Hago el trazo en las cordenadas del pixel más brillante
       Trazos trazo = new Trazos(16);
-      trazo.setPosition(pixelMasBrillante.x, pixelMasBrillante.y);
+      trazo.setPosition(pixelMasBrillante.x+bola.getX()-150, pixelMasBrillante.y+bola.getY()-300);
       mundo.add(trazo);
       trazoAL.add(trazo);
     }
