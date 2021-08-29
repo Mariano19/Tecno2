@@ -138,9 +138,16 @@ void draw() {
       opencv.threshold(umbral);
 
       PImage salida = opencv.getOutput();
-      //Dibujo la camara en el canvas
+      
+      //Dibujo la camara con umbral en el canvas
       image(salida, bola.getX()-150, bola.getY()-300);
-
+      
+      //Dibujo la camara con baja opacidad (como guia)
+      pushStyle();
+      tint(255,100);
+      image(camara,bola.getX()-150, bola.getY()-300);
+      popStyle();
+      
       //Devuelve el punto más brillante de la camara
       PVector pixelMasBrillante = opencv.max();
 
