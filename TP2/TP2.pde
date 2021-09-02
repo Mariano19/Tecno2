@@ -82,10 +82,11 @@ void setup() {
   //====VIDEO===================================
   String[] listaDeCamaras = Capture.list(); //Devuelve una lista de todas las camaras disponibles
   printArray(listaDeCamaras); //Imprime la lista
-  camara = new Capture( this, listaDeCamaras[1]); //Selecciona que camara usar
+  camara = new Capture( this, ancho, alto, "DroidCam Source 3"); //Selecciona que camara usar
   //camara = new Capture(this,ancho,alto)  //Utiliza la primer camara que encuentra
   camara.start();
   opencv = new OpenCV(this, ancho, alto);
+  opencv.invert();
   //==============================================
 
   //====SONIDO===================================
@@ -143,10 +144,10 @@ void draw() {
       image(salida, bola.getX()-150, bola.getY()-300);
       
       //Dibujo la camara con baja opacidad (como guia)
-      pushStyle();
-      tint(255,100);
-      image(camara,bola.getX()-150, bola.getY()-300);
-      popStyle();
+      //pushStyle();
+      //tint(255,100);
+      //image(camara,bola.getX()-150, bola.getY()-300);
+      //popStyle();
       
       //Devuelve el punto más brillante de la camara
       PVector pixelMasBrillante = opencv.max();
