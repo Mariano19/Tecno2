@@ -1,7 +1,5 @@
 //Declaro imagenes
-PImage aguavisual;
-PImage aguavisual2;
-PImage fondoimg;
+PImage fondoimg, fondovisual;
 PImage ganaste;
 PImage perdiste;
 PImage cursor;
@@ -23,11 +21,11 @@ void iniciar() {
     nubes[i]=loadImage("nube"+i+".png");
   }
   //Imagenes obstaculos
-  aguavisual = loadImage("aguav1.png");
-  aguavisual2 = loadImage("aguav2.png");
+  
 
   //Imagenes    
   fondoimg = loadImage("fondo2.png");
+  fondovisual = loadImage("fondovisual.png");
   arbol = loadImage("arbol.png");
   cursor = loadImage("pencil.png");
   cursor.resize(40, 40);
@@ -63,7 +61,8 @@ void iniciar() {
 }
 
 
-void escenario() {    
+void escenario() { 
+  
 
   //Piso 1
   Plataforma piso = new Plataforma(1280+400, 30);    //1~tamanio
@@ -127,8 +126,10 @@ void escenario() {
   Plataforma plataforma1 = new Plataforma(200, 10); 
   plataforma1.inicializar (1700, 900, false);   
   plataforma1.setName("plataforma1");
+  plataforma1.setNoStroke();
+  plataforma1.setNoFill();
   mundo.add( plataforma1 );  
-  plataforma1.setFill(0, 255, 0);
+  //plataforma1.setFill(0, 255, 0);
 
   //Plataforma2
   Plataforma plataforma2 = new Plataforma(300, 10); 
@@ -192,25 +193,7 @@ void escenario() {
 }
 
 
-//Movimiento visual agua
-void movAgua() { 
-  pos = pos + (step*dir); 
-  //line(200, pos, 50, pos); 
-  if (pos >= 1000 || pos <= 900 ) { 
-    dir = dir * -1;
-  }
-  image(aguavisual, 1400, pos);
-  //image(aguavisual2,1400,pos-10);
-}
-void movAgua2() { 
-  pos2 = pos2 + (step2*dir2); 
-  //line(200, pos, 50, pos); 
-  if (pos2 >= 1000 || pos2 <= 900 ) { 
-    dir2 = dir2 * -1;
-  }
-  //image(aguavisual,1400,pos);
-  image(aguavisual2, 1400, pos2-20);
-}
+
 
 //==================================
 // ANALISÍS DE CONTACTO
@@ -239,6 +222,8 @@ void contactStarted(FContact contacto) {
     } 
     //SI TOCA AGUA PIERDE
     else if (body1.getName()=="bola" || body2.getName()=="bola" && body1.getName()=="agua1" || body2.getName()=="agua1" || body1.getName()=="agua2" || body2.getName()=="agua2") {
+      water.play();
+      water.rewind();
       estado="lose";
     }
   } else {

@@ -23,11 +23,13 @@ Moneda moneda;
 Plataforma plataforma;
 Obstaculo obstaculo;
 Minim minim;
+Animaciones animaciones;
 
 //Sonido
 AudioPlayer musica;
 AudioPlayer bounce;
 AudioPlayer blob;
+AudioPlayer water;
 
 //=================================
 //CALIBRACIÓN DEL VIDEO
@@ -36,7 +38,7 @@ Capture camara;
 OpenCV opencv;
 int ancho = 640;//ancho de la camara(no funciona ahora mismo)
 int alto = 480;//alto de la camara(no funciona ahora mismo)
-int umbral = 250;//umbral de luz (0-255) Modificar según situación de luz
+int umbral = 252;//umbral de luz (0-255) Modificar según situación de luz
 //==============================
 
 
@@ -50,13 +52,6 @@ ArrayList<Trazos> trazoAL;
 //estados del juego
 String estado;
 
-//Variables de movimiento de agua
-float dir = 1;
-float step = 1;
-float pos=910;
-float dir2 = 1;
-float step2 = 0.9;
-float pos2=910;
 
 void setup() {
   size( 1280, 720 );
@@ -67,7 +62,9 @@ void setup() {
   Fisica.init(this);
   iniciar();
   escenario();
-
+  
+  
+  animaciones = new Animaciones();
   trazoAL = new ArrayList<Trazos>();  
   portada = new Portada();
   ganar = new Ganar();
@@ -76,13 +73,11 @@ void setup() {
   instr = new Instr();
   score = 0;  
 
-
-
-
   //====VIDEO===================================
   String[] listaDeCamaras = Capture.list(); //Devuelve una lista de todas las camaras disponibles
   printArray(listaDeCamaras); //Imprime la lista
-  camara = new Capture( this, ancho, alto, "DroidCam Source 3"); //Selecciona que camara usar
+  camara = new Capture( this, ancho, alto, "DroidCam Source 3"); //Selecciona que camara usar  
+  //camara = new Capture( this, ancho, alto, "Microsoft LifeCam HD-5001"); //Selecciona que camara usar
   //camara = new Capture(this,ancho,alto)  //Utiliza la primer camara que encuentra
   camara.start();
   opencv = new OpenCV(this, ancho, alto);
@@ -91,6 +86,7 @@ void setup() {
 
   //====SONIDO===================================
   minim = new Minim(this);
+  water = minim.loadFile("water.mp3", 2048);
   musica = minim.loadFile("musica.mp3", 2048);
   bounce = minim.loadFile("bounce.wav", 2048);
   blob = minim.loadFile("blob.mp3", 2048);
@@ -102,24 +98,28 @@ void setup() {
 
 void draw() {
 
-  i -=1;
+  i-=1;
   portada.dibujar();
   creditos.dibujar();
   instr.dibujar();
 
   //Estado juego sin translate
   if (estado.equals("juego")) {
+    
     image(fondoimg, i, 0);
-    image(fondoimg, 2899+i, 0);
+    //image(fondoimg, 2899+i, 0);
+    
+    
   }
 
   //Estado juego con translate
   if (estado.equals("juego")) {    
     mundo.step();
     translate( 300-bola.getX(), 450-bola.getY() ); //mueve la camara con la bola
-
-    movAgua();
-    movAgua2();
+    
+  
+    animaciones.dibujar();
+    
 
     //HACER QUE EL TRAZADO DESAPAREZCA 
     for (int i =trazoAL.size()-1; i>=0; i--) {
@@ -141,7 +141,10 @@ void draw() {
       PImage salida = opencv.getOutput();
       
       //Dibujo la camara con umbral en el canvas
+      pushStyle();
+      blendMode(ADD);
       image(salida, bola.getX()-150, bola.getY()-300);
+      popStyle();
       
       //Dibujo la camara con baja opacidad (como guia)
       //pushStyle();
@@ -170,6 +173,7 @@ void draw() {
 
 
     mundo.draw();
+    image(fondovisual, -295, 600);
 
     if (bola.getX() < width-600) {    //hace lenta la bola para las instrucciones y luego acelera  
       bola.actualizarvel1();
@@ -219,4 +223,17 @@ void keyPressed() {
     score = 0;
     i = 0;
   }
+  /*//test//////////////////////////////////////////////////////////////
+  if ( estado.equals("juego") && keyCode == RIGHT) {    
+    bola.setPosition( bola.xOriginal +=200, bola.yOriginal );
+  }
+  if ( estado.equals("juego") && keyCode == LEFT) {    
+    bola.setPosition( bola.xOriginal -=200, bola.yOriginal );
+  }
+  if ( estado.equals("juego") && keyCode == UP) {    
+    bola.setPosition( bola.xOriginal, bola.yOriginal -=100);
+  }
+  if ( estado.equals("juego") && keyCode == DOWN) {    
+    bola.setPosition( bola.xOriginal, bola.yOriginal +=100);
+  }*/
 }

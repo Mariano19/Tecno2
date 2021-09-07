@@ -1,5 +1,5 @@
 class Obstaculo extends FBox {
-  PImage agua;
+  //PImage agua;
   
 
   String tipo;
@@ -16,7 +16,7 @@ class Obstaculo extends FBox {
     if (tipo.equals("agua"))
     {
 
-      agua = loadImage("agua.png");
+      //agua = loadImage("agua.png");
       setName("agua");
       setStatic(true);
       setNoStroke();
@@ -26,8 +26,10 @@ class Obstaculo extends FBox {
     {
       setName("arbol");
       setStatic(true);
+      setNoStroke();
+      setNoFill();
       setRestitution(0.5);
-      attachImage(loadImage("arbol.png"));
+      //attachImage(loadImage("arbol.png"));
     } else if (tipo.equals("nube"))
     {
 
