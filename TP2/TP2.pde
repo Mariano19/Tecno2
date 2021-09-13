@@ -61,7 +61,7 @@ void setup() {
   noCursor();
   textAlign(CENTER);
   rectMode(CORNER);
-  estado = "win";
+  estado = "portada";
   Fisica.init(this);
   iniciar();
   escenario();
