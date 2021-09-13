@@ -61,7 +61,7 @@ void setup() {
   noCursor();
   textAlign(CENTER);
   rectMode(CORNER);
-  estado = "portada";
+  estado = "juego";
   Fisica.init(this);
   iniciar();
   escenario();
@@ -107,11 +107,13 @@ void draw() {
   portada.boton();
   creditos.dibujar();
   instr.dibujar();
+  
 
   //Estado juego sin translate
   if (estado.equals("juego")) {    
     image(fondoimg, i, 0);
-    image(fondoimg, 2899+i, 0);      
+    image(fondoimg, 2899+i, 0);     
+    bola.mapeo();
   }
 
   //Estado juego con translate

@@ -46,6 +46,20 @@ class Bola extends FCircle {
     //aplico una posicion inicial
     setPosition( xOriginal, yOriginal );
   }
+  
+  void mapeo(){
+    float w = map(bola.getX(),xOriginal,4*width,0,400);
+    
+    fill(255,70);
+    stroke(0);
+    rect(width/2-200,30,400,10);
+    fill(100,200,0);
+    noStroke();
+    rect(width/2-200,30,w,10);
+    //image(img,width/2-200+w,30);
+    fill(255,0,0);
+    ellipse(width/2-200+w,35,20,20);
+  }
 
   void actualizarvel1() {
     //addForce (100, 0);  
