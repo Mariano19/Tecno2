@@ -1,3 +1,4 @@
+import garciadelcastillo.dashedlines.*;
 import gab.opencv.*;
 import processing.video.*;
 import ddf.minim.*;
@@ -7,6 +8,7 @@ import ddf.minim.signals.*;
 import ddf.minim.spi.*;
 import ddf.minim.ugens.*;
 import fisica.*;
+
 
 //clases 
 FWorld mundo;
@@ -23,6 +25,7 @@ Moneda moneda;
 Plataforma plataforma;
 Obstaculo obstaculo;
 Minim minim;
+DashedLines dash;
 Animaciones animaciones;
 
 //Sonido
@@ -58,12 +61,13 @@ void setup() {
   noCursor();
   textAlign(CENTER);
   rectMode(CORNER);
-  estado = "portada";
+  estado = "win";
   Fisica.init(this);
   iniciar();
   escenario();
   
-  
+  dash = new DashedLines(this);
+  dash.pattern(10,10);
   animaciones = new Animaciones();
   trazoAL = new ArrayList<Trazos>();  
   portada = new Portada();
@@ -100,26 +104,21 @@ void draw() {
 
   i-=1;
   portada.dibujar();
+  portada.boton();
   creditos.dibujar();
   instr.dibujar();
 
   //Estado juego sin translate
-  if (estado.equals("juego")) {
-    
+  if (estado.equals("juego")) {    
     image(fondoimg, i, 0);
-    //image(fondoimg, 2899+i, 0);
-    
-    
+    image(fondoimg, 2899+i, 0);      
   }
 
   //Estado juego con translate
   if (estado.equals("juego")) {    
     mundo.step();
-    translate( 300-bola.getX(), 450-bola.getY() ); //mueve la camara con la bola
-    
-  
-    animaciones.dibujar();
-    
+    translate( 300-bola.getX(), 450-bola.getY() ); //mueve la camara con la bola    
+    animaciones.dibujar();    
 
     //HACER QUE EL TRAZADO DESAPAREZCA 
     for (int i =trazoAL.size()-1; i>=0; i--) {
@@ -146,12 +145,6 @@ void draw() {
       image(salida, bola.getX()-150, bola.getY()-300);
       popStyle();
       
-      //Dibujo la camara con baja opacidad (como guia)
-      //pushStyle();
-      //tint(255,100);
-      //image(camara,bola.getX()-150, bola.getY()-300);
-      //popStyle();
-      
       //Devuelve el punto más brillante de la camara
       PVector pixelMasBrillante = opencv.max();
 
@@ -168,9 +161,8 @@ void draw() {
     textFont(kinder);
     text("Puntaje:" + score, bola.getX()-150, bola.getY()-400);
     textSize(20);
-    text("Presiona R para reiniciar", bola.getX()+800, bola.getY()-400);
+    //text("Presiona R para reiniciar", bola.getX()+800, bola.getY()-400);
     image(instrucciones, -50, 200);
-
 
     mundo.draw();
     image(fondovisual, -295, 600);
@@ -182,16 +174,19 @@ void draw() {
     }
 
     pushStyle();
+    PVector pixelMasBrillante = opencv.max();
     imageMode(CORNER);
-    image(cursor, mouseX+bola.getX()-300, mouseY+bola.getY()-470);
+    image(cursor, pixelMasBrillante.x+bola.getX()-150, pixelMasBrillante.y+bola.getY()-300);
     popStyle();
   }
 
   //Estado ganador/perdedor
   if (estado.equals("win")) {
     ganar.pantalla();
+    ganar.boton();
   } else if (estado.equals("lose")) {
     perder.pantalla();
+    perder.boton();
   }
 }
 
