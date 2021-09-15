@@ -1,4 +1,6 @@
 PImage bolaimg;
+PImage bolahud;
+PImage progreso;
 
 class Bola extends FCircle {
 
@@ -12,6 +14,8 @@ class Bola extends FCircle {
     //llamando al constructor de la clase madre ( FCircle )
     super(50);
     bolaimg = loadImage("bola.png");
+    bolahud = loadImage("bola.png");
+    progreso = loadImage("progreso.png");
     bolaimg.resize(50, 50);
     //setFill(255, 0, 0);
     attachImage(bolaimg);
@@ -48,17 +52,19 @@ class Bola extends FCircle {
   }
   
   void mapeo(){
-    float w = map(bola.getX(),xOriginal,4*width,0,400);
+    float w = map(bola.getX(),xOriginal,4*width,0,395);
     
-    fill(255,70);
-    stroke(0);
-    rect(width/2-200,30,400,10);
+    //fill(255,70);
+    //stroke(0);
+    //rect(width/2-200,30,400,10);
+    image(progreso,width/2-200,30);
     fill(100,200,0);
     noStroke();
-    rect(width/2-200,30,w,10);
-    //image(img,width/2-200+w,30);
-    fill(255,0,0);
-    ellipse(width/2-200+w,35,20,20);
+    rect(width/2-195,53,w,12,30);
+    image(bolahud,width/2-200+w,30+15);
+    bolahud.resize(30,30);
+    //fill(255,0,0);
+    //ellipse(width/2-200+w,35,20,20);
   }
 
   void actualizarvel1() {

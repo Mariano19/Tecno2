@@ -147,6 +147,12 @@ void draw() {
       image(salida, bola.getX()-150, bola.getY()-300);
       popStyle();
       
+              //PUNTAJE
+    fill(0);
+    textFont(kinder);
+    text("Puntaje:" + score, bola.getX()-150, bola.getY()-400);
+    textSize(20);
+      
       //Devuelve el punto más brillante de la camara
       PVector pixelMasBrillante = opencv.max();
 
@@ -158,11 +164,7 @@ void draw() {
     }
     //============================
     
-    //PUNTAJE
-    fill(0);
-    textFont(kinder);
-    text("Puntaje:" + score, bola.getX()-150, bola.getY()-400);
-    textSize(20);
+
     //text("Presiona R para reiniciar", bola.getX()+800, bola.getY()-400);
     image(instrucciones, -50, 200);
 
@@ -181,6 +183,9 @@ void draw() {
     image(cursor, pixelMasBrillante.x+bola.getX()-150, pixelMasBrillante.y+bola.getY()-300);
     popStyle();
   }
+    
+      
+
 
   //Estado ganador/perdedor
   if (estado.equals("win")) {
