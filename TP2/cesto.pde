@@ -14,6 +14,6 @@ class Cesto extends FBox {
     setGrabbable(false);
     setVelocity(0, 0);
     //aplico una posicion inicial
-    setPosition( 4500, 350);
+    setPosition( 4500, 550);
   }
 }
