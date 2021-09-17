@@ -76,6 +76,6 @@ class Animaciones{
     //TORTUGA
     image(imagestortuga[currentFrame], 1600, 870);
     //TRAMPOLIN
-    image(trampolin,2420,620);
+    //image(trampolin,2420,620);
   } 
 }
