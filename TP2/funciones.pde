@@ -217,6 +217,8 @@ void contactStarted(FContact contacto) {
 
     //SI LA BOLA TOCA AL CESTO SE GANA
     else if (body1.getName()=="bola" || body2.getName()=="bola" && body1.getName()=="cesto" || body2.getName()=="cesto") {
+      win.play();
+      win.rewind();
       estado="win";
     }
     //SI TOCA LAS PLATAFORMAS REPRODUCE SONIDO
@@ -229,6 +231,8 @@ void contactStarted(FContact contacto) {
       water.play();
       water.rewind();
       estado="lose";
+      lose.play();
+      lose.rewind();
     }
   } else {
     //Si toca los edges de mundo se pierde (Habría que hacer que solo se pierda si se choca el mundo.bottom, pero no se como hacerlo)
