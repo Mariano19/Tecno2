@@ -72,7 +72,7 @@ class Animaciones{
     image(imagesagua[currentFrame+1], posX+2100, posY-50);
     //println(images[currentFrame]);
     //ARBOL
-    image(imagesarbol[currentFrame], 2500, 415);
+    image(imagesarbol[currentFrame], 2500, 435);
     //TORTUGA
     image(imagestortuga[currentFrame], 1600, 870);
     //TRAMPOLIN
