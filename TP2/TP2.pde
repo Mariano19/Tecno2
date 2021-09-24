@@ -33,6 +33,8 @@ AudioPlayer musica;
 AudioPlayer bounce;
 AudioPlayer blob;
 AudioPlayer water;
+AudioPlayer lose;
+AudioPlayer win;
 
 //=================================
 //CALIBRACIÓN DEL VIDEO
@@ -90,6 +92,8 @@ void setup() {
 
   //====SONIDO===================================
   minim = new Minim(this);
+  win = minim.loadFile("win.mp3", 2048);
+  lose = minim.loadFile("lose.mp3", 2048);
   water = minim.loadFile("water.mp3", 2048);
   musica = minim.loadFile("musica.mp3", 2048);
   bounce = minim.loadFile("bounce.wav", 2048);
@@ -110,7 +114,8 @@ void draw() {
   
 
   //Estado juego sin translate
-  if (estado.equals("juego")) {    
+  if (estado.equals("juego")) {  
+    musica.play();
     image(fondoimg, i, 0);
     image(fondoimg, 2899+i, 0);     
     bola.mapeo();
@@ -191,9 +196,11 @@ void draw() {
   if (estado.equals("win")) {
     ganar.pantalla();
     ganar.boton();
+    musica.pause();
   } else if (estado.equals("lose")) {
     perder.pantalla();
     perder.boton();
+    musica.pause();
   }
 }
 
@@ -224,6 +231,9 @@ void keyPressed() {
     escenario();
     score = 0;
     i = 0;
+    win.pause();
+    lose.pause();
+    musica.rewind();
   }/*
   //test//////////////////////////////////////////////////////////////
   if ( estado.equals("juego") && keyCode == RIGHT) {    
