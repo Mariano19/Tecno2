@@ -133,7 +133,7 @@ void escenario() {
 
   //Plataforma2
   Plataforma plataforma2 = new Plataforma(300, 10); 
-  plataforma2.inicializar (2500, 680, false);
+  plataforma2.inicializar (2500, 670, false);
   plataforma2.setRotation(radians(0));
   plataforma2.setRestitution(1.3); //le subi esto para hacerlo un poco más fácil
   plataforma2.setNoStroke();
