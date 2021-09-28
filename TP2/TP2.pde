@@ -15,8 +15,6 @@ FWorld mundo;
 Portada portada;
 Ganar ganar;
 Perder perder;
-Creditos creditos;
-Instr instr;
 Trazos[] trazos;
 FCircle trazo;
 Bola bola;
@@ -43,7 +41,7 @@ Capture camara;
 OpenCV opencv;
 int ancho = 640;//ancho de la camara(no funciona ahora mismo)
 int alto = 480;//alto de la camara(no funciona ahora mismo)
-int umbral = 252;//umbral de luz (0-255) Modificar según situación de luz
+int umbral = 253;//umbral de luz (0-255) Modificar según situación de luz
 //==============================
 
 
@@ -67,16 +65,14 @@ void setup() {
   Fisica.init(this);
   iniciar();
   escenario();
-  
+
   dash = new DashedLines(this);
-  dash.pattern(10,10);
+  dash.pattern(10, 10);
   animaciones = new Animaciones();
   trazoAL = new ArrayList<Trazos>();  
   portada = new Portada();
   ganar = new Ganar();
   perder = new Perder();
-  creditos = new Creditos();
-  instr = new Instr();
   score = 0;  
 
   //====VIDEO===================================
@@ -109,9 +105,7 @@ void draw() {
   i-=1;
   portada.dibujar();
   portada.boton();
-  creditos.dibujar();
-  instr.dibujar();
-  
+
 
   //Estado juego sin translate
   if (estado.equals("juego")) {  
@@ -145,30 +139,30 @@ void draw() {
       opencv.threshold(umbral);
 
       PImage salida = opencv.getOutput();
-      
+
       //Dibujo la camara con umbral en el canvas
       pushStyle();
       blendMode(ADD);
-      image(salida, bola.getX()-150, bola.getY()-300);
+      image(salida, bola.getX()-200, bola.getY()-300);
       popStyle();
-      
-              //PUNTAJE
-    fill(0);
-    textFont(kinder);
-    text("Puntaje:" + score, bola.getX()-150, bola.getY()-400);
-    textSize(20);
-      
+
+      //PUNTAJE
+      fill(0);
+      textFont(kinder);
+      text("Puntaje:" + score, bola.getX()-150, bola.getY()-400);
+      textSize(20);
+
       //Devuelve el punto más brillante de la camara
       PVector pixelMasBrillante = opencv.max();
 
       //Hago el trazo en las cordenadas del pixel más brillante
       Trazos trazo = new Trazos(16);
-      trazo.setPosition(pixelMasBrillante.x+bola.getX()-150, pixelMasBrillante.y+bola.getY()-300);
+      trazo.setPosition(pixelMasBrillante.x+bola.getX()-200, pixelMasBrillante.y+bola.getY()-300);
       mundo.add(trazo);
       trazoAL.add(trazo);
     }
     //============================
-    
+
 
     //text("Presiona R para reiniciar", bola.getX()+800, bola.getY()-400);
     image(instrucciones, -50, 200);
@@ -185,11 +179,11 @@ void draw() {
     pushStyle();
     PVector pixelMasBrillante = opencv.max();
     imageMode(CORNER);
-    image(cursor, pixelMasBrillante.x+bola.getX()-150, pixelMasBrillante.y+bola.getY()-300);
+    image(cursor, pixelMasBrillante.x+bola.getX()-200, pixelMasBrillante.y+bola.getY()-300);
     popStyle();
   }
-    
-      
+
+
 
 
   //Estado ganador/perdedor
@@ -201,18 +195,6 @@ void draw() {
     perder.pantalla();
     perder.boton();
     musica.pause();
-  }
-}
-
-void mousePressed() {  
-  if (estado.equals("portada")) {
-    portada.jugar();
-  }
-  if (estado.equals("creditos")) {
-    creditos.volver();
-  }
-  if (estado.equals("instrucciones")) {
-    instr.volver();
   }
 }
 
@@ -234,18 +216,5 @@ void keyPressed() {
     win.pause();
     lose.pause();
     musica.rewind();
-  }/*
-  //test//////////////////////////////////////////////////////////////
-  if ( estado.equals("juego") && keyCode == RIGHT) {    
-    bola.setPosition( bola.xOriginal +=200, bola.yOriginal );
-  }
-  if ( estado.equals("juego") && keyCode == LEFT) {    
-    bola.setPosition( bola.xOriginal -=200, bola.yOriginal );
-  }
-  if ( estado.equals("juego") && keyCode == UP) {    
-    bola.setPosition( bola.xOriginal, bola.yOriginal -=100);
-  }
-  if ( estado.equals("juego") && keyCode == DOWN) {    
-    bola.setPosition( bola.xOriginal, bola.yOriginal +=100);
-  }*/
+  }  
 }
